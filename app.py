@@ -30,11 +30,14 @@ def add_contact():
        fullname = request.form['fullname'] 
        phone = request.form['phone']
        email = request.form['email']
-       print('Datos obtenidos, ahora a la bd')
-       cur = mysql.connection.cursor()
-       cur.execute('INSERT INTO contacts (fullname, phone, email) VALUES (%s, %s, %s)',(fullname, phone, email))
-       mysql.connection.commit()
-       flash('Contacto agregado!!!')
+       """Controlo que las variables recibidas del formulario no estén vacías"""
+       if fullname and phone and email:
+            cur = mysql.connection.cursor()
+            cur.execute('INSERT INTO contacts (fullname, phone, email) VALUES (%s, %s, %s)',(fullname, phone, email))
+            mysql.connection.commit()
+            flash('Contacto agregado!!!')
+       else:
+            flash('No se guardó nada!!!')
        return redirect(url_for('Index'))
 
 @app.route('/edit/<id>')
